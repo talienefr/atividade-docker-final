@@ -1,0 +1,48 @@
+version: '3.8'
+
+services:
+  db:
+    image: postgres:15-alpine
+    container_name: meu-postgres
+    environment:
+      POSTGRES_USER: aluno
+      POSTGRES_PASSWORD: senha123
+      POSTGRES_DB: meubanco
+    volumes:
+      - pgdata:/var/lib/postgresql/data 
+    ports:
+      - "5432:5432" 
+    networks:
+      - minha-rede
+
+  backend:
+    build: ./backend
+    container_name: meu-backend
+    ports:
+      - "8080:3000" 
+    environment:
+      DB_HOST: db 
+      DB_USER: aluno
+      DB_PASSWORD: senha123
+      DB_NAME: meubanco
+    depends_on:
+      - db 
+    networks:
+      - minha-rede
+
+  frontend:
+    build: ./frontend
+    container_name: meu-frontend
+    ports:
+      - "3000:80" 
+    depends_on:
+      - backend
+    networks:
+      - minha-rede
+
+volumes:
+  pgdata:
+
+networks:
+  minha-rede:
+    driver: bridge

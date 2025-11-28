@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Docker Demo</title>
+</head>
+<body>
+    <h1>Lista de Usuários</h1>
+    <input type="text" id="nome" placeholder="Digite um nome">
+    <button onclick="adicionar()">Cadastrar</button>
+    <ul id="lista"></ul>
+
+    <script>
+        const API_URL = 'http://localhost:8080/usuarios'; // Porta mapeada no Docker Compose
+
+        async function carregar() {
+            const response = await fetch(API_URL);
+            const usuarios = await response.json();
+            const lista = document.getElementById('lista');
+            lista.innerHTML = usuarios.map(u => `<li>${u.nome}</li>`).join('');
+        }
+
+        async function adicionar() {
+            const nome = document.getElementById('nome').value;
+            await fetch(API_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ nome })
+            });
+            document.getElementById('nome').value = '';
+            carregar();
+        }
+
+        carregar();
+    </script>
+</body>
+</html>
