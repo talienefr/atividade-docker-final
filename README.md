@@ -16,4 +16,4 @@ Aplicação web composta por três microserviços contenerizados, desenvolvida p
 
 1. Clone o repositório:
    ```bash
-   git clone <URL_DO_SEU_REPOSITORIO>
+   git clone <https://github.com/talienefr/atividade-docker-final.git>
